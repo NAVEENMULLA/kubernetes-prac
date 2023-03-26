@@ -10,6 +10,8 @@ spec:
   conatiners:         #list/array
     - name: nginx-container    #1st item
       image: nginx
+      
+     
 
 
 #kubectl create -f pod.yaml

@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-config
+data:
+  key: value
+  APP_COLOUR: blue
+  APP_MODE: prod
+
+
+
+
+#pod definition file injecting configmap here
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    key: value
+    app: myapp
+    type: front-end
+spec: 
+  conatiners:
+    - name: nginx-container
+      image: nginx
+
+      envFrom:                                #ENV
+        - configMapRef:
+            name: myapp-config
+
+      env:
+        - name: APP_COLOUR                   #SINGLE ENV
+          valueFrom:
+            configMapRef:
+              name: app-config
+              key: APP_COLOUR
+
+      volumes:
+      - name: app-config-volume             #VOLUME
+        configMap:
+          name: app-config
+
+      
+      volumes:
+      - name: app-secret-volume             #for secret volume
+        secret:
+          secretName: app-secret
